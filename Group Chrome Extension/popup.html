@@ -4,26 +4,34 @@
     <style>
       button {
         height: 30px;
-        width: 30px;
+        width: 15px;
+        outline: none;
+        margin: 15px;
+      }
+      input {
+        height: 20px;
+        width: 833px;
         outline: none;
         margin: 10px;
       }
     </style>
+      <script type="text/javascript" src="textbox.js"></script>
   </head>
   <body>
     <p>
       <input type = "text"
-             id = "emailText"
-             value = "email here"></input>
-      <script>"textBox.js"</script>
+             id = "emailText">
+      </input>
     </p>
-      <button type = "button"
-              id = "submitButton"
-              value = "submit"
-              onclick="addEmail(this.value)">
-      </button>
-    <script src = "textBox.js"></script>
-    <p>
-    </p>
+    <div class="btn-group">
+      <button style="width:10%" type="button" id="reallyImportant" onclick="addImportantEmail">Really Important</button>
+      <button style="width:10%" type="button" id="Important" onclick="addImportantEmail">Important</button>
+      <button style="width:10%" type="button" id="notImportant" onclick="addNotImportantEmail">Not Important</button>
+    </div>
+    <div class="btn-group">
+      <button style="width:10%" type="button" id="printButton" onclick="printReallyImportantArray"> Really Important List</button>
+      <button style="width:10%" type="button" id="printButton" onclick="printImportantArray"> Important List</button>
+      <button style="width:10%" type="button" id="printButton" onclick="printNotImportantArray"> Not Important List</button>
+    </div>
   </body>
 </html>
