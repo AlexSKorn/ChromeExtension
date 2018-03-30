@@ -1,20 +1,43 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+var email;
+var emailReallyImportantArray = [];
+var emailImportantArray= [];
+var emailNonImportantArray = [];
 
-'use strict';
+function addImportantEmail(){
+  email = document.getElementById("emailText").value;
+  emailReallyImportantArray.push(email);
+  //document.getElementById("emailText").value = "";
+}
 
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-function constructOptions(kButtonColors) {
-  for (let item of kButtonColors) {
-    let button = document.createElement('button');
-    button.style.backgroundColor = item;
-    button.addEventListener('click', function() {
-      chrome.storage.sync.set({color: item}, function() {
-        console.log('color is ' + item);
-      })
-    });
-    page.appendChild(button);
+function addImportantEmail(){
+  email = document.getElementById("emailText").value;
+  emailImportantArray.push(email);
+  //document.getElementById("emailText").value = "";
+}
+
+function addNotImportantEmail(){
+  email = document.getElementById("emailText").value;
+  emailNonImportantArray.push(email);
+  //document.getElementById("emailText").value = "";
+}
+
+function printReallyImportantArray(emailReallyImportantArray){
+  for (var i = 0; i<emailReallyImportantArray.length; i++){
+    //document.writeln(emailReallyImportantArray[i] + "/n");
+    console.log(emailReallyImportantArray[i]);
   }
 }
-constructOptions(kButtonColors);
+
+function printImportantArray(emailImportantArray){
+  for (var i = 0; i<emailImportantArray.length; i++){
+    //document.writeln(emailImportantArray[i] + "/n");
+    console.log(emailImportantArray[i]);
+  }
+}
+
+function printNotImportantArray(emailNonImportantArray){
+  for (var i = 0; i<emailNonImportantArray.length; i++){
+    //document.writeln(emailNonImportantArray[i] + "/n");
+    console.log(emailNotImportantArray[i]);
+  }
+}
