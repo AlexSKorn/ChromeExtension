@@ -1,8 +1,12 @@
+"use strict";
+
+//runs in the background waiting for an email
+//calls notify when you receive an email that is
+//on your contacts List that is set in the options
 //var _StopWatch = new StopWatch();
 var starTime = null;
 var endTime = null;
 var totalTime = null;
-//var totaalTIme = null;
 
 function notify(email){
   //calls notify for really important if it exists in really important array
@@ -28,12 +32,20 @@ function getTime(){
   return day.getTime();
 }
 
-function getEndTime(){
+function setEndTime(){
   endTime = getTime();
 }
 
-function getStartTime(){
+function getEndTime(){
+  return endTime;
+}
+
+function setStartTime(){
   startTime = getTime();
+}
+
+function getStartTime(){
+  return starTime
 }
 
 function calculateTime(){

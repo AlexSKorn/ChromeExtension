@@ -1,3 +1,5 @@
+"use strict";
+
 function StopWatch(){
 
 var startTime = null;

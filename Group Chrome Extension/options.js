@@ -1,3 +1,5 @@
+"use strict";
+
 var email;
 var emailReallyImportantArray = [];
 var emailImportantArray= [];

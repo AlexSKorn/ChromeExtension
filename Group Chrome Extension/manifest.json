@@ -2,7 +2,7 @@
   "name": "Getting Started Example",
   "version": "1.0",
   "description": "Build an Extension!",
-  "permissions":["storage" ,  "notifications"],
+  "permissions":["storage" ,  "notifications", "https://mail.google.com/mail/"],
   "background":{
     "scripts": ["background.js"],
     "persistent": false
