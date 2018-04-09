@@ -5,7 +5,7 @@ var emailReallyImportantArray = [];
 var emailImportantArray= [];
 var emailNonImportantArray = [];
 
-function addImportantEmail(){
+function addReallyImportantEmail(){
   email = document.getElementById("emailText").value;
   emailReallyImportantArray.push(email);
   //document.getElementById("emailText").value = "";
@@ -43,3 +43,10 @@ function printNotImportantArray(emailNonImportantArray){
     console.log(emailNotImportantArray[i]);
   }
 }
+
+//document.getElementById("reallyImportant").addEventListener("click", addReallyImportantEmail());
+//document.getElementById("Important").addEventListener("click", addImportantEmail());
+//document.getElementById("notImportant").addEventListener("click", addNotImportantEmail());
+//document.getElementById("reallyImportantPrintButton").addEventListener("click",printReallyImportantArray(emailReallyImportantArray));
+//document.getElementById("importantPrintButton").addEventListener("click", printImportantArray(emailImportantArray));
+//document.getElementById("notImportantPrintButton").addEventListener("click", printNotImportantArray(emailNonImportantArray));
