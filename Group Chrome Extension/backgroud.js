@@ -52,3 +52,45 @@ function calculateTime(){
   totalTime = startTime - endTime
   return totalTime;
 }
+
+function rNotification()
+{
+  var rNoti =
+  {
+    type: "basic",
+    title: "Very Important Message Recieved",
+    iconUrl: "exclamation-mark-red-hi.png",
+    message: "Message"
+  }
+  chrome.notifications.create("Very Important Notification", rNoti);
+
+  var vSound = new Audio("http://www.pacdv.com/sounds/interface_sound_effects/sound116.wav");
+  vSound.play();
+}
+
+function iNotification()
+{
+  var iNoti =
+  {
+    type: "basic",
+    title: "Important Message Recieved",
+    iconUrl: "Important-information.png",
+    message: "Message"
+  }
+    chrome.notifications.create("Important Notification", iNoti);
+
+    var iSound = new Audio("https://audio.code.org/winpoint2.mp3");
+    iSound.play();
+}
+
+function nNotification()
+{
+  var nNoti =
+  {
+    type: "basic",
+    title: "Message Recieved",
+    iconUrl: "email.png",
+    message: "Message"
+  }
+    chrome.notifications.create("Not Important Notification", nNoti);
+}
