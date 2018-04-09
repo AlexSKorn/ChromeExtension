@@ -10,12 +10,12 @@
       }
       input {
         height: 20px;
-        width: 833px;
+        width: 34%;
         outline: none;
-        margin: 10px;
+        margin: 15px;
       }
     </style>
-      <script type="text/javascript" src="textbox.js">
+      <script type="text/javascript" src="options.js">
       </script>
   </head>
   <body>
@@ -26,7 +26,7 @@
     </p>
     <div class="btn-group">
       <button style="width:10%" type="button"
-      id="reallyImportant" onclick="addImportantEmail()">Really Important</button>
+      id="reallyImportant" onclick="addReallyImportantEmail()">Really Important</button>
       <button style="width:10%" type="button"
       id="Important" onclick="addImportantEmail()">Important</button>
       <button style="width:10%" type="button"
@@ -34,11 +34,11 @@
     </div>
     <div class="btn-group">
       <button style="width:10%" type="button"
-      id="printButton" onclick="printReallyImportantArray(emailReallyImportantArray)"> Really Important List</button>
+      id="reallyImportantPrintButton" onclick="printReallyImportantArray(emailReallyImportantArray)"> Really Important List</button>
       <button style="width:10%" type="button"
-      id="printButton" onclick="printImportantArray(emailImportantArray)"> Important List</button>
+      id="importantPrintButton" onclick="printImportantArray(emailImportantArray)"> Important List</button>
       <button style="width:10%" type="button"
-      id="printButton" onclick="printNotImportantArray(emailNotImportantArray)"> Not Important List</button>
+      id="notImportantPrintButton" onclick="printNotImportantArray(emailNotImportantArray)"> Not Important List</button>
     </div>
   </body>
 </html>
