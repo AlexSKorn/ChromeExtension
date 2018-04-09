@@ -1,14 +1,12 @@
 {
-  "name": "Getting Started Example",
+  "name": "Email Response Time",
   "version": "1.0",
-  "description": "Build an Extension!",
-  "permissions":["storage" ,  "notifications", "https://mail.google.com/mail/"],
-  "background":{
-    "scripts": ["background.js"],
+  "description": "Measure email response time",
+  "permissions": ["storage", "notifications", "https://mail.google.com/mail/"],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["backgroud.js"],
     "persistent": false
-  },
-  "page_action":{
-    "default_popup": "popup.html",
   },
   "manifest_version": 2
 }
