@@ -62,7 +62,9 @@ function rNotification()
     iconUrl: "exclamation-mark-red-hi.png",
     message: "Message"
   }
-  chrome.notifications.create("Very Important Notification", rNoti);
+  chrome.notifications.clear("Very Important Notification", function() {
+    chrome.notifications.create("Very Important Notification", rNoti);
+  })
 
   var vSound = new Audio("http://www.pacdv.com/sounds/interface_sound_effects/sound116.wav");
   vSound.play();
@@ -77,7 +79,10 @@ function iNotification()
     iconUrl: "Important-information.png",
     message: "Message"
   }
+
+  chrome.notifications.clear("Important Notification", function(){
     chrome.notifications.create("Important Notification", iNoti);
+  })
 
     var iSound = new Audio("https://audio.code.org/winpoint2.mp3");
     iSound.play();
@@ -92,5 +97,8 @@ function nNotification()
     iconUrl: "email.png",
     message: "Message"
   }
+
+  chrome.notifications.clear("Not Important Notification", function(){
     chrome.notifications.create("Not Important Notification", nNoti);
+  }) 
 }
