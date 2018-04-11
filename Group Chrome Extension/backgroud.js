@@ -8,6 +8,14 @@ var starTime = null;
 var endTime = null;
 var totalTime = null;
 
+function getMessage(userId, messageId, callback){
+  var request = gapi.client.gmail.users.messages.get({
+    'userId': userId,
+    'id': messageId
+  });
+  request.execute(callback);
+}
+
 function notify(email){
   //calls notify for really important if it exists in really important array
   if(emailReallyImportantArray.includes(email) == true){
@@ -100,5 +108,5 @@ function nNotification()
 
   chrome.notifications.clear("Not Important Notification", function(){
     chrome.notifications.create("Not Important Notification", nNoti);
-  }) 
+  })
 }
