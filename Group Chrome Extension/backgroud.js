@@ -4,9 +4,19 @@
 //calls notify when you receive an email that is
 //on your contacts List that is set in the options
 //var _StopWatch = new StopWatch();
-var starTime = null;
+//gmail.get.unread_inbox_emails();
+//gmai.get.visible_emails();
+var startTime = null;
 var endTime = null;
 var totalTime = null;
+
+function getMessage(userId, messageId, callback){
+  var request = gapi.client.gmail.users.messages.get({
+    'userId': userId,
+    'id': messageId
+  });
+  request.execute(callback);
+}
 
 function notify(email){
   //calls notify for really important if it exists in really important array
@@ -66,8 +76,8 @@ function rNotification()
     chrome.notifications.create("Very Important Notification", rNoti);
   })
 
-  var rSound = new Audio("rNotification.wav");
-  rSound.play();
+  var vSound = new Audio("http://www.pacdv.com/sounds/interface_sound_effects/sound116.wav");
+  vSound.play();
 }
 
 function iNotification()
@@ -84,8 +94,8 @@ function iNotification()
     chrome.notifications.create("Important Notification", iNoti);
   })
 
-  var iSound = new Audio("iNotification.wav");
-  iSound.play();
+    var iSound = new Audio("https://audio.code.org/winpoint2.mp3");
+    iSound.play();
 }
 
 function nNotification()
@@ -101,8 +111,4 @@ function nNotification()
   chrome.notifications.clear("Not Important Notification", function(){
     chrome.notifications.create("Not Important Notification", nNoti);
   })
-
-  var nSound = new Audio("nNotification.wav");
-  nSound.play();
-
 }
