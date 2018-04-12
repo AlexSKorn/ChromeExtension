@@ -59,14 +59,14 @@ function rNotification()
   {
     type: "basic",
     title: "Very Important Message Recieved",
-    iconUrl: "exclamation-mark-red-hi.png",
+    iconUrl: "NotificationStuff/exclamation-mark-red-hi.png",
     message: "Message"
   }
   chrome.notifications.clear("Very Important Notification", function() {
     chrome.notifications.create("Very Important Notification", rNoti);
   })
 
-  var rSound = new Audio("rNotification.wav");
+  var rSound = new Audio("NotificationStuff/rNotification.wav");
   rSound.play();
 }
 
@@ -76,7 +76,7 @@ function iNotification()
   {
     type: "basic",
     title: "Important Message Recieved",
-    iconUrl: "Important-information.png",
+    iconUrl: "NotificationStuff/Important-information.png",
     message: "Message"
   }
 
@@ -84,7 +84,7 @@ function iNotification()
     chrome.notifications.create("Important Notification", iNoti);
   })
 
-  var iSound = new Audio("iNotification.wav");
+  var iSound = new Audio("NotificationStuff/iNotification.wav");
   iSound.play();
 }
 
@@ -94,7 +94,7 @@ function nNotification()
   {
     type: "basic",
     title: "Message Recieved",
-    iconUrl: "email.png",
+    iconUrl: "NotificationStuff/email.png",
     message: "Message"
   }
 
@@ -102,7 +102,7 @@ function nNotification()
     chrome.notifications.create("Not Important Notification", nNoti);
   })
 
-  var nSound = new Audio("nNotification.wav");
+  var nSound = new Audio("NotificationStuff/nNotification.wav");
   nSound.play();
 
 }
