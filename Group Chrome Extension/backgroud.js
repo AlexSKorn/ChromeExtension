@@ -100,5 +100,5 @@ function nNotification()
 
   chrome.notifications.clear("Not Important Notification", function(){
     chrome.notifications.create("Not Important Notification", nNoti);
-  }) 
+  })
 }
