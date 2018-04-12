@@ -66,8 +66,8 @@ function rNotification()
     chrome.notifications.create("Very Important Notification", rNoti);
   })
 
-  var vSound = new Audio("http://www.pacdv.com/sounds/interface_sound_effects/sound116.wav");
-  vSound.play();
+  var rSound = new Audio("rNotification.wav");
+  rSound.play();
 }
 
 function iNotification()
@@ -84,8 +84,8 @@ function iNotification()
     chrome.notifications.create("Important Notification", iNoti);
   })
 
-    var iSound = new Audio("https://audio.code.org/winpoint2.mp3");
-    iSound.play();
+  var iSound = new Audio("iNotification.wav");
+  iSound.play();
 }
 
 function nNotification()
@@ -101,4 +101,8 @@ function nNotification()
   chrome.notifications.clear("Not Important Notification", function(){
     chrome.notifications.create("Not Important Notification", nNoti);
   })
+
+  var nSound = new Audio("nNotification.wav");
+  nSound.play();
+
 }
