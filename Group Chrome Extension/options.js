@@ -44,6 +44,10 @@ function printNotImportantArray(emailNonImportantArray){
   }
 }
 
+function clearEmailTextField(){
+  document.getElementById("emailText").value = "";
+}
+
 //document.getElementById("reallyImportant").addEventListener("click", addReallyImportantEmail());
 //document.getElementById("Important").addEventListener("click", addImportantEmail());
 //document.getElementById("notImportant").addEventListener("click", addNotImportantEmail());
