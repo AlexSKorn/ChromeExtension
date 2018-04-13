@@ -14,11 +14,11 @@ function notify(email){
     rNotification();
   }
   //calls notify for important if it exsits in important array
-  else if(emailReallyImportantArray.includes(email) == true){
+  else if(emailImportantArray.includes(email) == true){
     iNotification();
   }
   //calls notify for not important if it exists in not important array
-  else if(emailReallyImportantArray.includes(email) == true){
+  else if(nonImportantArray.includes(email) == true){
     nNotification();
   }
   else{
