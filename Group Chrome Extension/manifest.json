@@ -1,12 +1,22 @@
 {
+  "manifest_version": 2,
   "name": "Email Response Time",
   "version": "1.0",
   "description": "Measure email response time",
-  "permissions": ["storage", "notifications", "https://mail.google.com/mail/"],
+  "permissions": ["storage", "notifications", "https://mail.google.com/mail/", "https://*/*"],
   "options_page": "options.html",
   "background": {
     "scripts": ["backgroud.js"],
     "persistent": false
   },
-  "manifest_version": 2
+  "content_scripts": [
+    {
+          "matches": [ "*://mail.google.com/*" ],
+          "js": ["src/extensionInjector.js"],
+          "run_at": "document_end"
+      }
+  ],
+  "web_accessible_resources": [
+      "dist/extension.js"
+  ]
 }
