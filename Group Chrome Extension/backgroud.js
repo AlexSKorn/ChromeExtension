@@ -11,15 +11,15 @@ var totalTime = null;
 function notify(email){
   //calls notify for really important if it exists in really important array
   if(emailReallyImportantArray.includes(email) == true){
-    notifyReallyImportant(); //doesnt exist yet
+    rNotification();
   }
   //calls notify for important if it exsits in important array
   else if(emailReallyImportantArray.includes(email) == true){
-    notifyImportant();//doesnt exist yet
+    iNotification();
   }
   //calls notify for not important if it exists in not important array
   else if(emailReallyImportantArray.includes(email) == true){
-    notifyNonImportant();//doesnt exist yet
+    nNotification();
   }
   else{
     return;
