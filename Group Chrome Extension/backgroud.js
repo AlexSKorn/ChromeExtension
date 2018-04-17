@@ -32,26 +32,6 @@ function getTime(){
   return day.getTime();
 }
 
-function setEndTime(){
-  endTime = getTime();
-}
-
-function getEndTime(){
-  return endTime;
-}
-
-function setStartTime(){
-  startTime = getTime();
-}
-
-function getStartTime(){
-  return starTime
-}
-
-function calculateTime(){
-  totalTime = startTime - endTime
-  return totalTime;
-}
 
 function rNotification()
 {
