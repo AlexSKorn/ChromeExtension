@@ -13410,5 +13410,34 @@ gmail.observe.on("load", () => {
 
 },{"gmail-js":1,"jquery":2}]},{},[3]);
 
+var startingUnreadEmails = gmail.get.unread_inbox_emails();
+var unreadEmails = 0;
+var interval = 800;
+var gmailIdChecker = 0;
+var oldGmailId;
+var value = 1;
+
+var timer = window.setInterval(function(){
+    unreadEmails = gmail.get.unread_inbox_emails();
+    console.log(unreadEmails);
+    gmailIdChecker = gmail.get.email_id();
+    if (unreadEmails > startingUnreadEmails) {
+       //send message with data to background gmail.get.visible_emails();
+       unreadEmails = startingUnreadEmails;//set unread emails back to startingUnreadEmails
+    }
+    if (gmailIdChecker != 0 && gmailIdChecker != oldGmailId){
+      oldGmailId = gmailIdChecker;
+      //send a message because the email is opened to update the time of the email
+      gmailIdChecker = 0;
+    }
+}, interval);
+
+// var emailData = new Array(); // initialize array to fill with email data
+//     emailData = gmail.get.visible_emails();
+// const idData = emailData[0]['id'];
+//     const timeData = emailData[0]['time'];
+//     const senderData = emailData[0]['sender'];
+//     const userEmail = gmail.get.user_email();
+
 const userEmail = gmail.get.user_email();
 window.dispatchEvent(new CustomEvent("getEmail", {detail: userEmail}));
