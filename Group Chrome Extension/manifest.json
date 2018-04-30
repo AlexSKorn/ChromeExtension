@@ -12,7 +12,7 @@
   "content_scripts": [
     {
           "matches": [ "*://mail.google.com/*" ],
-          "js": ["src/extensionInjector.js"],
+          "js": ["src/extensionInjector.js", "message.js"],
           "run_at": "document_end"
       }
   ],

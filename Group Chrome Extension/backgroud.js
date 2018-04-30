@@ -8,6 +8,12 @@ var starTime = null;
 var endTime = null;
 var totalTime = null;
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
+{
+  console.log(request.email);
+  sendResponse({farewell: "Message Received!"});
+});
+
 function notify(email){
   //calls notify for really important if it exists in really important array
   if(emailReallyImportantArray.includes(email) == true){
