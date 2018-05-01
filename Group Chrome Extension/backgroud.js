@@ -10,6 +10,7 @@ var totalTime = null;
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
+  rNotification();
   console.log(request.email);
   sendResponse({farewell: "Message Received!"});
 });

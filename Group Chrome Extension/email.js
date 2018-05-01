@@ -1,8 +1,7 @@
-function Email(id, sender, importance, receiveTime, openTime){
+function Email(id, sender, receiveTime, openTime){
 
   this.id = id;
   this.sender = sender;
-  this.importance = importance;
   this.receiveTime = receiveTime;
   this.openTime = openTime;
 
@@ -12,10 +11,6 @@ get theId(){
 
 get theSender(){
   return this.sender;
-}
-
-get theImportance(){
-  return this.importance;
 }
 
 get theReceiveTime(){
@@ -32,10 +27,6 @@ set theId(uniqueId){
 
 set theSender(senderOfEmail){
   this.sender = senderOfEmail;
-}
-
-set theImportance(importanceLevel){
-  this.importance = importanceLevel;
 }
 
 set theReceiveTime(timeReceived){
