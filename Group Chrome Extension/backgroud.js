@@ -1,18 +1,22 @@
 "use strict";
 
-//runs in the background waiting for an email
-//calls notify when you receive an email that is
-//on your contacts List that is set in the options
-//var _StopWatch = new StopWatch();
-var starTime = null;
-var endTime = null;
-var totalTime = null;
+var theReallyImportantEmails = new Array();
+var theImportantEmails = new Array();
+var theNotImportantEmails = new Array();
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
+  //var theEmail = new Email(id, request.email, getTime(), null);
+  //pushInCorrectArray(theEmail);
   rNotification();
   console.log(request.email);
   sendResponse({farewell: "Message Received!"});
+});
+
+chrome.runtime.onMessage.addListener(function(request,sender, sendResponse)
+{
+  console.log(request.openTime);
+  sendResponse({time: "Message Received!" + getTime()});
 });
 
 function notify(email){
@@ -31,12 +35,35 @@ function notify(email){
   else{
     return;
   }
-  //Date.now();
+
 }
+  //Date.now();
 
 function getTime(){
   var day = new Date();
   return day.getTime();
+}
+
+function pushInCorrectArray(email){
+  //calls notify for really important if it exists in really important array
+  if(emailReallyImportantArray.includes(email) == true){
+    theReallyImportantEmails.push(email);
+  }
+  //calls notify for important if it exsits in important array
+  else if(emailImportantArray.includes(email) == true){
+    theImportantEmails.push(email);
+  }
+  //calls notify for not important if it exists in not important array
+  else if(nonImportantArray.includes(email) == true){
+    theNotImportantEmails.push(email);
+  }
+  else{
+    return;
+  }
+}
+
+function updateOpenTime(theEmailId){
+  //search the arrays for email ID and set the openTime
 }
 
 

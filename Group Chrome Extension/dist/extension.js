@@ -13427,16 +13427,19 @@ var timer = window.setInterval(function(){
     gmailIdChecker = gmail.get.email_id();
     if (unreadEmails > startingUnreadEmails) {
       const senderData = emailData[0]['sender'];
-      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData}));
+      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData}));//need to send email
        //send message with data to background gmail.get.visible_emails();
        startingUnreadEmails = unreadEmails;//set unread emails back to startingUnreadEmails
        console.log(unreadEmails);
     }
-    //if (gmailIdChecker != 0 && gmailIdChecker != oldGmailId){
-      //oldGmailId = gmailIdChecker;
+    if (gmailIdChecker != 0 && gmailIdChecker != oldGmailId){
+      oldGmailId = gmailIdChecker;
+      idToSend = gmail.get.email_id();
+      window.dispatchEvent(new CustomEvent("getId", {detail: idToSend}));
+      console.log(idToSend);
       //send a message because the email is opened to update the time of the email
-      //gmailIdChecker = 0;
-    //}
+      gmailIdChecker = 0;
+    }
 }, interval);
 
 // var emailData = new Array(); // initialize array to fill with email data
