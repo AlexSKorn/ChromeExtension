@@ -1,9 +1,10 @@
-function Email(id, sender, receiveTime, openTime){
+function Email(id, sender, receiveTime, openTime, totalTime){
 
   this.id = id;
   this.sender = sender;
   this.receiveTime = receiveTime;
   this.openTime = openTime;
+  this.totalTime = totalTime;
 
 get theId(){
   return this.id;
@@ -21,6 +22,10 @@ get theOpenTime(){
   return this.openTime;
 }
 
+get theTotalTime(){
+  return this.totalTime;
+}
+
 set theId(uniqueId){
   this.id = uniqueId;
 }
@@ -35,5 +40,13 @@ set theReceiveTime(timeReceived){
 
 set theOpenTime(timeOpened){
   this.openTime = timeOpened;
+}
+
+set theTotalTime(calculatedTotalTime){
+  this.openTime = calculatedTotalTime;
+}
+
+function calculateTotalTime(anReceiveTime, aOpenTime){
+  return(aOpenTime - anReceiveTime);
 }
 }

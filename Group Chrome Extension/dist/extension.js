@@ -13411,24 +13411,26 @@ gmail.observe.on("load", () => {
 },{"gmail-js":1,"jquery":2}]},{},[3]);
 
 var unreadEmails = 0;
-var interval = 800;
+var interval = 5000;
 var gmailIdChecker = 0;
 var oldGmailId;
 var value = 1;
 var startingUnreadEmails = gmail.get.unread_inbox_emails();
 
-var emailData = new Array(); // initialize array to fill with email data
-emailData = gmail.get.visible_emails();
+//var emailDataOnLoad = new Array(); // initialize array to fill with email data
+//emailDataOnLoad = gmail.get.visible_emails();
 
 
 var timer = window.setInterval(function(){
+    var emailData = new Array();
     unreadEmails = gmail.get.unread_inbox_emails();
     console.log(unreadEmails);
     gmailIdChecker = gmail.get.email_id();
     if (unreadEmails > startingUnreadEmails) {
+      emailData = gmail.get.visible_emails();
       const senderData = emailData[0]['sender'];
       const senderID = emailData[0]['id']
-      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData + " " +senderID}));//need to send email
+      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData + " " + senderID}));//need to send email
        //send message with data to background gmail.get.visible_emails();
        startingUnreadEmails = unreadEmails;//set unread emails back to startingUnreadEmails
        console.log(unreadEmails);

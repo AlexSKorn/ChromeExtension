@@ -18,10 +18,10 @@ window.addEventListener("getEmail", function(e)
 }, false);
 
 //when an email is opened send to background
-window.addEventListener("getOpenTime", function(e)
+window.addEventListener("getId", function(e)
 {
   console.log(e.detail);
-  chrome.runtime.sendMessage({openTime: e.detail}, function(response)
+  chrome.runtime.sendMessage({theId: e.detail}, function(response)
   {
     console.log(response.time);
   })

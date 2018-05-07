@@ -6,17 +6,22 @@ var theNotImportantEmails = new Array();
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
-  //var theEmail = new Email(id, request.email, getTime(), null);
+  var emailSplitId = request.email.split(" ");
+  var theAEmail = emailSplitId[0];
+  var theId = emailSplitId[1];
+  var theEmail = {id: theId, sender: theEmail, receiveTime: getTime(), openTime: null, totalTime: null};
   //pushInCorrectArray(theEmail);
   rNotification();
+  console.log(theEmail);
+  console.log(theAEmail);
   console.log(request.email);
   sendResponse({farewell: "Message Received!"});
 });
 
-chrome.runtime.onMessage.addListener(function(request,sender, sendResponse)
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
-  console.log(request.openTime);
-  sendResponse({time: "Message Received!" + getTime()});
+  console.log(request.theId);
+  sendResponse({time: "Message Received!"});
 });
 
 function notify(email){
@@ -65,6 +70,12 @@ function pushInCorrectArray(email){
 function updateOpenTime(theEmailId){
   //search the arrays for email ID and set the openTime
 }
+
+// function getProperData(theRequest){
+//   var emailIdSplit = theRequest.split(" ");
+//   var theEmail = emailIdSplit[0];
+//   var theId = emailIdSplit[1];
+// }
 
 
 function rNotification()
