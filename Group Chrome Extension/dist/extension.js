@@ -13427,7 +13427,8 @@ var timer = window.setInterval(function(){
     gmailIdChecker = gmail.get.email_id();
     if (unreadEmails > startingUnreadEmails) {
       const senderData = emailData[0]['sender'];
-      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData}));//need to send email
+      const senderID = emailData[0]['id']
+      window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData + " " +senderID}));//need to send email
        //send message with data to background gmail.get.visible_emails();
        startingUnreadEmails = unreadEmails;//set unread emails back to startingUnreadEmails
        console.log(unreadEmails);
