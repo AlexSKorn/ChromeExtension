@@ -7,19 +7,23 @@ var theNotImportantEmails = new Array();
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
   var emailSplitId = request.email.split(" ");
-  var theAEmail = emailSplitId[0];
+  var theNotifyEmail = emailSplitId[0];
   var theId = emailSplitId[1];
-  var theEmail = {id: theId, sender: theEmail, receiveTime: getTime(), openTime: null, totalTime: null};
+  var theEmail = {id: theId, sender: theNotifyEmail, receiveTime: getTime(), openTime: null, totalTime: null};
   //pushInCorrectArray(theEmail);
-  rNotification();
+  //notify(theNotifyEmail);
+  rNotification();//get rid of this when options working
   console.log(theEmail);
-  console.log(theAEmail);
+  console.log(theNotifyEmail);
   console.log(request.email);
   sendResponse({farewell: "Message Received!"});
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
+  //access the array and specific email using the ID
+  //getTime();
+  //updateOpenTimeAndCalculate()
   console.log(request.theId);
   sendResponse({time: "Message Received!"});
 });
@@ -49,26 +53,58 @@ function getTime(){
   return day.getTime();
 }
 
-function pushInCorrectArray(email){
+function pushInCorrectArray(emailObject){
   //calls notify for really important if it exists in really important array
-  if(emailReallyImportantArray.includes(email) == true){
-    theReallyImportantEmails.push(email);
+  if(emailReallyImportantArray.includes(emailObject['sender']) == true){
+    theReallyImportantEmails.push(emailObject);
   }
   //calls notify for important if it exsits in important array
-  else if(emailImportantArray.includes(email) == true){
-    theImportantEmails.push(email);
+  else if(emailImportantArray.includes(emailObject['sender']) == true){
+    theImportantEmails.push(emailObject);
   }
   //calls notify for not important if it exists in not important array
-  else if(nonImportantArray.includes(email) == true){
-    theNotImportantEmails.push(email);
+  else if(nonImportantArray.includes(emailObject['sender']) == true){
+    theNotImportantEmails.push(emailObject);
   }
   else{
     return;
   }
 }
 
-function updateOpenTime(theEmailId){
+function updateOpenTimeAndCalculate(theEmailId){
+  var theReallyImportantObject = search(theReallyImportantEmails, theEmailId, "id");
+  var theImportantObject = search(theImportantEmails, theEmailId, "id");
+  var theNotImportantObject = search(theNotImportantEmails, theEmailId, "id");
+
+  if(theReallyImportantObject != null){
+    theReallyImportantObject['openTime'] = getTime();
+    theReallyImportantObject['totalTime'] = calculateTotalTime(theReallyImportantObject['receiveTime'],
+    theReallyImportantObject['openTime']);
+  }
+  else if (theImportantObject != null){
+    theImportantObject['openTime'] = getTime();
+    theImportantObject['totalTime'] = calculateTotalTime(theImportantObject['receiveTime'],
+    theImportantObject['openTime']);
+
+  }
+  else if (theNotImportantObject != null){
+    theNotImportantObject['openTime'] = getTime();
+    theNotImportantObject['totalTime'] = calculateTotalTime(theNotImportantObject['receiveTime'],
+    theNotImportantObject['openTime']);
+
+  }
   //search the arrays for email ID and set the openTime
+}
+
+function search(array, key, prop){
+    // Optional, but fallback to key['name'] if not selected
+    prop = (typeof prop === 'undefined') ? 'name' : prop;
+
+    for (var i=0; i < array.length; i++) {
+        if (array[i][prop] === key) {
+            return array[i];
+        }
+    }
 }
 
 // function getProperData(theRequest){
