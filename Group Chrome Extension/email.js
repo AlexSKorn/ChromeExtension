@@ -46,7 +46,4 @@ set theTotalTime(calculatedTotalTime){
   this.openTime = calculatedTotalTime;
 }
 
-function calculateTotalTime(anReceiveTime, aOpenTime){
-  return(aOpenTime - anReceiveTime);
-}
 }

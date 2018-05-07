@@ -3,6 +3,8 @@
 var theReallyImportantEmails = new Array();
 var theImportantEmails = new Array();
 var theNotImportantEmails = new Array();
+//var theBullshitEmail = {id: 1234, sender: "blah", receiveTime: getTime(), openTime: null, totalTime: null};
+//theReallyImportantEmails.push(theBullshitEmail);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
@@ -105,6 +107,10 @@ function search(array, key, prop){
             return array[i];
         }
     }
+}
+
+function calculateTotalTime(anReceiveTime, aOpenTime){
+  return(aOpenTime - anReceiveTime);
 }
 
 // function getProperData(theRequest){
