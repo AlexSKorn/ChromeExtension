@@ -25,12 +25,10 @@ function addNotImportantEmail(){
   localStorage.setItem('notImportantStorage', JSON.stringify(emailNonImportantArray));
   //document.getElementById("emailText").value = "";
 }
-
+//generic save data in localStorage
 function save(whichArray){
   localStorage.setItem('theArray',JSON.stringify(whichArray));
-
 }
-
 
 $("#reallyImportant").click(function(){
   addReallyImportantEmail();

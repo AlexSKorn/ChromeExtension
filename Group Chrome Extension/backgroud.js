@@ -3,6 +3,10 @@
 var theReallyImportantEmails = new Array();
 var theImportantEmails = new Array();
 var theNotImportantEmails = new Array();
+var emailReallyImportantArrayData = new Array();
+var emailImportantArrayData = new Array();
+var emailNotImportantArrayData = new Array();
+
 //var theBullshitEmail = {id: 1234, sender: "blah", receiveTime: getTime(), openTime: null, totalTime: null};
 //theReallyImportantEmails.push(theBullshitEmail);
 
@@ -12,9 +16,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
   var theNotifyEmail = emailSplitId[0];
   var theId = emailSplitId[1];
   var theEmail = {id: theId, sender: theNotifyEmail, receiveTime: getTime(), openTime: null, totalTime: null};
-  //pushInCorrectArray(theEmail);
-  //notify(theNotifyEmail);
-  rNotification();//get rid of this when options working
+  pushInCorrectArray(theEmail);
+  notify(theNotifyEmail);
+  //rNotification();//get rid of this when working
   console.log(theEmail);
   console.log(theNotifyEmail);
   console.log(request.email);
@@ -24,23 +28,44 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
   //access the array and specific email using the ID
-  //getTime();
-  //updateOpenTimeAndCalculate()
+  //updateOpenTimeAndCalculate(request.theId)
   console.log(request.theId);
+  console.log(theReallyImportantEmails);
   sendResponse({time: "Message Received!"});
 });
 
-function notify(email){
+//gets the email addresses from the local storage and turns it into readable dating by parsing the JSON into an array
+function getArrayEmailAddressFromLocal()
+{
+  emailReallyImportantArrayData = localStorage.getItem('reallyImportantStorage');
+  emailImportantArrayData = localStorage.getItem('importantStorage');
+  emailNotImportantArrayData = localStorage.getItem('notImportantStorage');
+  console.log(emailReallyImportantArrayData);
+}
+
+//get the email objects if they have not been opened yet
+function arrayEmailDataFromLocal()
+{
+  theReallyImportantEmails = localStorage.setItem('reallyImportantObjectStorage');
+  theImportantEmails = localStorage.setItem('importantObjectStorage');
+  theNotImportantEmails = localStorage.setItem('notImportantObjectStorage');
+}
+
+//notifies the user with the correct notification
+function notify(email)
+{
+  getArrayEmailAddressFromLocal(); //gets all the email addresses needed
+
   //calls notify for really important if it exists in really important array
-  if(emailReallyImportantArray.includes(email) == true){
+  if(emailReallyImportantArrayData.includes(email) == true){
     rNotification();
   }
   //calls notify for important if it exsits in important array
-  else if(emailImportantArray.includes(email) == true){
+  else if(emailImportantArrayData.includes(email) == true){
     iNotification();
   }
   //calls notify for not important if it exists in not important array
-  else if(nonImportantArray.includes(email) == true){
+  else if(emailNotImportantArrayData.includes(email) == true){
     nNotification();
   }
   else{
@@ -48,32 +73,44 @@ function notify(email){
   }
 
 }
-  //Date.now();
 
-function getTime(){
+//get the system time in MS
+function getTime()
+{
   var day = new Date();
   return day.getTime();
 }
 
-function pushInCorrectArray(emailObject){
-  //calls notify for really important if it exists in really important array
-  if(emailReallyImportantArray.includes(emailObject['sender']) == true){
+//used to save the times in local storage based on importance
+//    localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
+//    localStorage.setItem('theImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
+//    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
+
+//pushes the email object into the correct array locally so we can access it cross session
+function pushInCorrectArray(emailObject)
+{
+  arrayEmailDataFromLocal();//sets all the arrays needed
+
+  if(emailReallyImportantArrayData.includes(emailObject['sender']) == true){
     theReallyImportantEmails.push(emailObject);
+    localStorage.setItem('reallyImportantObjectStorage', JSON.stringify(theReallyImportantEmails));
   }
-  //calls notify for important if it exsits in important array
-  else if(emailImportantArray.includes(emailObject['sender']) == true){
+  else if(emailImportantArrayData.includes(emailObject['sender']) == true){
     theImportantEmails.push(emailObject);
+    localStorage.setItem('importantObjectStorage', JSON.stringify(theImportantEmails));
   }
-  //calls notify for not important if it exists in not important array
-  else if(nonImportantArray.includes(emailObject['sender']) == true){
+  else if(emailNotImportantArrayData.includes(emailObject['sender']) == true){
     theNotImportantEmails.push(emailObject);
+    localStorage.setItem('notImportantObjectStorage', JSON.stringify(theNotImportantEmails));
   }
   else{
     return;
   }
 }
 
-function updateOpenTimeAndCalculate(theEmailId){
+//updates the open time of the object and calcualtes the total time is takes
+function updateOpenTimeAndCalculate(theEmailId)
+{
   var theReallyImportantObject = search(theReallyImportantEmails, theEmailId, "id");
   var theImportantObject = search(theImportantEmails, theEmailId, "id");
   var theNotImportantObject = search(theNotImportantEmails, theEmailId, "id");
@@ -82,26 +119,27 @@ function updateOpenTimeAndCalculate(theEmailId){
     theReallyImportantObject['openTime'] = getTime();
     theReallyImportantObject['totalTime'] = calculateTotalTime(theReallyImportantObject['receiveTime'],
     theReallyImportantObject['openTime']);
+    localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(theReallyImportantObject['totalTime']));
   }
   else if (theImportantObject != null){
     theImportantObject['openTime'] = getTime();
     theImportantObject['totalTime'] = calculateTotalTime(theImportantObject['receiveTime'],
     theImportantObject['openTime']);
-
+    localStorage.setItem('theImportantEmailsTime', JSON.stringify(theImportantObject['totalTime']));
   }
   else if (theNotImportantObject != null){
     theNotImportantObject['openTime'] = getTime();
     theNotImportantObject['totalTime'] = calculateTotalTime(theNotImportantObject['receiveTime'],
     theNotImportantObject['openTime']);
-
+    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(theNotImportantObject['totalTime']));
   }
   //search the arrays for email ID and set the openTime
 }
 
-function search(array, key, prop){
+function search(array, key, prop)
+{
     // Optional, but fallback to key['name'] if not selected
     prop = (typeof prop === 'undefined') ? 'name' : prop;
-
     for (var i=0; i < array.length; i++) {
         if (array[i][prop] === key) {
             return array[i];
@@ -109,17 +147,13 @@ function search(array, key, prop){
     }
 }
 
-function calculateTotalTime(anReceiveTime, aOpenTime){
+//calculates the total time for the object
+function calculateTotalTime(anReceiveTime, aOpenTime)
+{
   return(aOpenTime - anReceiveTime);
 }
 
-// function getProperData(theRequest){
-//   var emailIdSplit = theRequest.split(" ");
-//   var theEmail = emailIdSplit[0];
-//   var theId = emailIdSplit[1];
-// }
-
-
+//a really important email notification
 function rNotification()
 {
   var rNoti =
@@ -137,6 +171,7 @@ function rNotification()
   rSound.play();
 }
 
+//an important email notification
 function iNotification()
 {
   var iNoti =
@@ -155,6 +190,7 @@ function iNotification()
   iSound.play();
 }
 
+//a non important email notification
 function nNotification()
 {
   var nNoti =
