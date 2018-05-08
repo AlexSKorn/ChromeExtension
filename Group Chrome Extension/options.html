@@ -15,8 +15,6 @@
         margin: 15px;
       }
     </style>
-      <script type="text/javascript" src="options.js">
-      </script>
   </head>
   <body>
     <p>
@@ -26,19 +24,21 @@
     </p>
     <div class="btn-group">
       <button style="width:10%" type="button"
-      id="reallyImportant" onclick="addReallyImportantEmail()">Really Important</button>
+      id="reallyImportant">Really Important</button>
       <button style="width:10%" type="button"
-      id="Important" onclick="addImportantEmail()">Important</button>
+      id="Important">Important</button>
       <button style="width:10%" type="button"
-      id="notImportant" onclick="addNotImportantEmail()">Not Important</button>
+      id="notImportant">Not Important</button>
     </div>
     <div class="btn-group">
       <button style="width:10%" type="button"
-      id="reallyImportantPrintButton" onclick="printReallyImportantArray(emailReallyImportantArray)"> Really Important List</button>
+      id="reallyImportantPrintButton"> Really Important List</button>
       <button style="width:10%" type="button"
-      id="importantPrintButton" onclick="printImportantArray(emailImportantArray)"> Important List</button>
+      id="importantPrintButton"> Important List</button>
       <button style="width:10%" type="button"
-      id="notImportantPrintButton" onclick="printNotImportantArray(emailNotImportantArray)"> Not Important List</button>
+      id="notImportantPrintButton"> Not Important List</button>
     </div>
   </body>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="options.js"></script>
 </html>
