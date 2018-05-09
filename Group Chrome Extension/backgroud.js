@@ -6,8 +6,9 @@ var theNotImportantEmails = new Array();
 var emailReallyImportantArrayData = new Array();
 var emailImportantArrayData = new Array();
 var emailNotImportantArrayData = new Array();
+var theReallyImportantObject;
 
-//var theBullshitEmail = {id: 1234, sender: "blah", receiveTime: getTime(), openTime: null, totalTime: null};
+var theBullshitEmail = {id: 1234, sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
 //theReallyImportantEmails.push(theBullshitEmail);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
@@ -15,9 +16,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
   var emailSplitId = request.email.split(" ");
   var theNotifyEmail = emailSplitId[0];
   var theId = emailSplitId[1];
-  var theEmail = {id: theId, sender: theNotifyEmail, receiveTime: getTime(), openTime: null, totalTime: null};
-  pushInCorrectArray(theEmail);
-  notify(theNotifyEmail);
+  var theEmail = {id: theId, sender: theNotifyEmail, receiveTime: getTime(), openTime: 0, totalTime: 0};
+  pushInCorrectArray(theEmail);//pushes the email object into the correct array locally so we can access it cross session
+  notify(theNotifyEmail);//notifies the user with the correct notification
   //rNotification();//get rid of this when working
   console.log(theEmail);
   console.log(theNotifyEmail);
@@ -28,27 +29,26 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
   //access the array and specific email using the ID
-  //updateOpenTimeAndCalculate(request.theId)
+  updateOpenTimeAndCalculate(request.theId);
   console.log(request.theId);
   console.log(theReallyImportantEmails);
   sendResponse({time: "Message Received!"});
 });
 
-//gets the email addresses from the local storage and turns it into readable dating by parsing the JSON into an array
+//gets the email addresses from the local storage and turns it into readable data by parsing the JSON into an array
 function getArrayEmailAddressFromLocal()
 {
   emailReallyImportantArrayData = localStorage.getItem('reallyImportantStorage');
   emailImportantArrayData = localStorage.getItem('importantStorage');
   emailNotImportantArrayData = localStorage.getItem('notImportantStorage');
-  console.log(emailReallyImportantArrayData);
+  //console.log(emailReallyImportantArrayData);
 }
 
-//get the email objects if they have not been opened yet
-function arrayEmailDataFromLocal()
-{
-  theReallyImportantEmails = localStorage.setItem('reallyImportantObjectStorage');
-  theImportantEmails = localStorage.setItem('importantObjectStorage');
-  theNotImportantEmails = localStorage.setItem('notImportantObjectStorage');
+//gets the email data from the locally set arrays
+function getArrayEmailDataFromLocal(){
+  theReallyImportantEmails = JSON.parse(localStorage.getItem('reallyImportantObjectStorage'));
+  theImportantEmails = JSON.parse(localStorage.getItem('importantObjectStorage'));
+  theNotImportantEmails = JSON.parse(localStorage.getItem('notImportantObjectStorage'));
 }
 
 //notifies the user with the correct notification
@@ -69,6 +69,7 @@ function notify(email)
     nNotification();
   }
   else{
+    console.log("wasnt a saved email");
     return;
   }
 
@@ -81,15 +82,10 @@ function getTime()
   return day.getTime();
 }
 
-//used to save the times in local storage based on importance
-//    localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
-//    localStorage.setItem('theImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
-//    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(emailObject['totalTime']));
-
 //pushes the email object into the correct array locally so we can access it cross session
 function pushInCorrectArray(emailObject)
 {
-  arrayEmailDataFromLocal();//sets all the arrays needed
+  getArrayEmailAddressFromLocal();//gets all the priority email addresses
 
   if(emailReallyImportantArrayData.includes(emailObject['sender']) == true){
     theReallyImportantEmails.push(emailObject);
@@ -108,10 +104,14 @@ function pushInCorrectArray(emailObject)
   }
 }
 
+
+//only part that isnt working yet
 //updates the open time of the object and calcualtes the total time is takes
 function updateOpenTimeAndCalculate(theEmailId)
 {
-  var theReallyImportantObject = search(theReallyImportantEmails, theEmailId, "id");
+  getArrayEmailDataFromLocal();
+
+  theReallyImportantObject = search(theReallyImportantEmails, theEmailId, "id");
   var theImportantObject = search(theImportantEmails, theEmailId, "id");
   var theNotImportantObject = search(theNotImportantEmails, theEmailId, "id");
 
@@ -133,7 +133,9 @@ function updateOpenTimeAndCalculate(theEmailId)
     theNotImportantObject['openTime']);
     localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(theNotImportantObject['totalTime']));
   }
-  //search the arrays for email ID and set the openTime
+  else{
+    return;
+  }
 }
 
 function search(array, key, prop)
