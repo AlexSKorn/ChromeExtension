@@ -1,6 +1,7 @@
 "use strict";
-//when appending to object array i keep overwriting not pushing
-//need to set open time and total time in the object arrays
+
+//declare arrays that need to be seen globablly
+initGenericFill();//fill array first time background is started to avoid Null;
 var theReallyImportantEmails = new Array();
 var theImportantEmails = new Array();
 var theNotImportantEmails = new Array();
@@ -13,12 +14,17 @@ var emailReallyImportantObjectDataArray = new Array();
 var emailImportantObjectDataArray = new Array();
 var emailNotImportantObjectDataArray =  new Array();
 
+//arrays so I dont overwrite time
+var dontOverWriteReallyImportantTime = new Array();
+var dontOverWriteImportantTime = new Array();
+var dontOverWriteNotImportantTime = new Array();
+
 
 //var theReallyImportantEmailsChecker = (SON.parse(localStorage.getItem('reallyImportantObjectStorage')));//returns an array of objects
-var printTestReallyImportant =  JSON.parse((localStorage.getItem('reallyImportantStorage')));// prints an arrray of strings
+//var printTestReallyImportant =  JSON.parse((localStorage.getItem('reallyImportantStorage')));// prints an arrray of strings
 //var theReallyImportantObject;
 
-var theBullshitEmail = {id: 1234, sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
+var theBullshitEmail = {id: "1234" , sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
 //theReallyImportantEmails.push(theBullshitEmail);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
@@ -30,19 +36,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
   pushInCorrectArray(theEmail);//pushes the email object into the correct array locally so we can access it cross session
   notify(theNotifyEmail);//notifies the user with the correct notification
   //rNotification();//get rid of this when working
-  console.log(theEmail);
-  console.log(theNotifyEmail);
-  console.log(request.email);
+  //console.log(theEmail);
+  //console.log(theNotifyEmail);
+  //console.log(request.email);
   sendResponse({farewell: "Message Received!"});
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
+  //console.log(request.theId);
+  //console.log(theReallyImportantEmails);
   //access the array and specific email using the ID
   updateOpenTimeAndCalculate(request.theId);
-  console.log(request.theId);
-  console.log(theReallyImportantEmails);
-  sendResponse({time: "Message Received!"});
+  sendResponse({bye: "Message Received!"});
 });
 
 //gets the email addresses from the local storage does not maintain them as an array
@@ -127,7 +133,8 @@ function pushInCorrectArray(emailObject)
 
 //unstorage, access specific object, update openTime and totalTime, save back to the storage with the updates, and set the time to the select new storage
 //only part that isnt working yet
-//updates the open time of the object and calcualtes the total time is takes
+//updates the open time of the object and calcualtes the total time is takes]
+//overwrites the totalTime dont want that, also doesnt add to the array of objects
 function updateOpenTimeAndCalculate(theEmailId)
 {
   getArrayEmailDataFromLocal();
@@ -139,11 +146,12 @@ function updateOpenTimeAndCalculate(theEmailId)
 
   //should update the object right now it just calculates total time and add it to new storage
   if(theReallyImportantObject != null){
-    if(theReallyImportantObject['openTime'] != 0 && theReallyImportantObject['totalTime'] != 0 ){
+    if(theReallyImportantObject['openTime'] == 0 && theReallyImportantObject['totalTime'] == 0 ){
     theReallyImportantObject['openTime'] = getTime();
     theReallyImportantObject['totalTime'] = calculateTotalTime(theReallyImportantObject['receiveTime'],
     theReallyImportantObject['openTime']);
-    localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(theReallyImportantObject['totalTime']));
+    dontOverWriteReallyImportantTime.push(theReallyImportantObject['totalTime']);
+    localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(dontOverWriteReallyImportantTime));
   }
   else{
     return;
@@ -151,23 +159,24 @@ function updateOpenTimeAndCalculate(theEmailId)
     //console.log(theReallyImportantObject['totalTime'] + "this is a REALLY important object");
   }
   else if (theImportantObject != null){
-    if(theImportantObject['openTime'] != 0 && theImportantObject['totalTime'] != 0 ){
+    if(theImportantObject['openTime'] == 0 && theImportantObject['totalTime'] == 0 ){
     theImportantObject['openTime'] = getTime();
     theImportantObject['totalTime'] = calculateTotalTime(theImportantObject['receiveTime'],
     theImportantObject['openTime']);
-    localStorage.setItem('theImportantEmailsTime', JSON.stringify(theImportantObject['totalTime']));
+    dontOverWriteImportantTime.push(theReallyImportantObject['totalTime']);
+    localStorage.setItem('theImportantEmailsTime', JSON.stringify(dontOverWriteImportantTime['totalTime']));
   }
   else{
     return;
   }
-    //console.log(theImportantObject['totalTime'] + "this is a IMPORTANT object");
   }
   else if (theNotImportantObject != null){
-    if(theNotImportantObject['openTime'] != 0 && theNotImportantObject['totalTime'] != 0 ){
+    if(theNotImportantObject['openTime'] == 0 && theNotImportantObject['totalTime'] == 0 ){
     theNotImportantObject['openTime'] = getTime();
     theNotImportantObject['totalTime'] = calculateTotalTime(theNotImportantObject['receiveTime'],
     theNotImportantObject['openTime']);
-    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(theNotImportantObject['totalTime']));
+    dontOverWriteNotImportantTime.push(theNotImportantObject['totalTime']);
+    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(dontOverWriteNotImportantTime['totalTime']));
   }
   else {
     return;
@@ -197,7 +206,7 @@ function calculateTotalTime(anReceiveTime, aOpenTime)
 }
 
 function initGenericFill(){
-      var genericFillEmail = {id: 123, sender: "abcd", receiveTime: 0, openTime: 0, totalTime: 0};// so the arrays arent see as null when the users first starts using the program
+      var genericFillEmail = {id: "123", sender: "abcd", receiveTime: 0, openTime: 0, totalTime: 0};// so the arrays arent see as null when the users first starts using the program
       var genericFillArray =  new Array();
       genericFillArray.push(genericFillEmail);
       localStorage.setItem('reallyImportantObjectStorage', JSON.stringify(genericFillArray));

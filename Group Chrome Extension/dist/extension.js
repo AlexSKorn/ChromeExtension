@@ -13433,13 +13433,13 @@ var timer = window.setInterval(function(){
       window.dispatchEvent(new CustomEvent("getEmail", {detail: senderData + " " + senderID}));//need to send email
        //send message with data to background gmail.get.visible_emails();
        startingUnreadEmails = unreadEmails;//set unread emails back to startingUnreadEmails
-       console.log(unreadEmails);
+       //console.log(unreadEmails);
     }
     if (gmailIdChecker != 0 && gmailIdChecker != oldGmailId){
       oldGmailId = gmailIdChecker;
       idToSend = gmail.get.email_id();
       window.dispatchEvent(new CustomEvent("getId", {detail: idToSend}));
-      console.log(idToSend);
+      //console.log(idToSend);
       //send a message because the email is opened to update the time of the email
       gmailIdChecker = 0;
     }

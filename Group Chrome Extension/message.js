@@ -23,6 +23,6 @@ window.addEventListener("getId", function(e)
   console.log(e.detail);
   chrome.runtime.sendMessage({theId: e.detail}, function(response)
   {
-    console.log(response.time);
+    console.log(response.bye);
   })
 }, false);
