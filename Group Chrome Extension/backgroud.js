@@ -99,7 +99,7 @@ function notify(email)
 function getTime()
 {
   var day = new Date();
-  return day.getTime();
+  return ((day.getTime() / 1000)/60);
 }
 
 //need to get the storage and add on to it for objects
