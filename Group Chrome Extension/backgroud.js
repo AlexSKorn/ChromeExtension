@@ -24,7 +24,7 @@ var dontOverWriteNotImportantTime = new Array();
 //var printTestReallyImportant =  JSON.parse((localStorage.getItem('reallyImportantStorage')));// prints an arrray of strings
 //var theReallyImportantObject;
 
-var theBullshitEmail = {id: "1234" , sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
+//var theBullshitEmail = {id: "1234" , sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
 //theReallyImportantEmails.push(theBullshitEmail);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
