@@ -2,9 +2,11 @@
 
 //declare arrays that need to be seen globablly
 initGenericFill();//fill array first time background is started to avoid Null;
+makeSureTimesDontOverWrite();
 var theReallyImportantEmails = new Array();
 var theImportantEmails = new Array();
 var theNotImportantEmails = new Array();
+
 var emailReallyImportantArrayData = new Array();
 var emailImportantArrayData = new Array();
 var emailNotImportantArrayData = new Array();
@@ -19,12 +21,16 @@ var dontOverWriteReallyImportantTime = new Array();
 var dontOverWriteImportantTime = new Array();
 var dontOverWriteNotImportantTime = new Array();
 
+//completed object arrays
+var reallyImportantCompletedObject = new Array();
+var importantCompletedObject = new Array();
+var notImportantCompletedObject = new Array();
 
 //var theReallyImportantEmailsChecker = (SON.parse(localStorage.getItem('reallyImportantObjectStorage')));//returns an array of objects
 //var printTestReallyImportant =  JSON.parse((localStorage.getItem('reallyImportantStorage')));// prints an arrray of strings
 //var theReallyImportantObject;
 
-//var theBullshitEmail = {id: "1234" , sender: "alexkorn1122@gmail.com", receiveTime: getTime(), openTime: 0, totalTime: 0};
+var theBullshitEmail = {id: "1234" , sender: "ggg", receiveTime: getTime(), openTime: 0, totalTime: 0};
 //theReallyImportantEmails.push(theBullshitEmail);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
@@ -39,7 +45,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
   //console.log(theEmail);
   //console.log(theNotifyEmail);
   //console.log(request.email);
-  sendResponse({farewell: "Message Received!"});
+  //sendResponse({farewell: "Message Received!"});
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
@@ -47,8 +53,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
   //console.log(request.theId);
   //console.log(theReallyImportantEmails);
   //access the array and specific email using the ID
+  if(isThisObjectCompleted(request.theId) == false){
   updateOpenTimeAndCalculate(request.theId);
-  sendResponse({bye: "Message Received!"});
+  //sendResponse({bye: "Message Received!"});
+  }
 });
 
 //gets the email addresses from the local storage does not maintain them as an array
@@ -67,10 +75,45 @@ function getArrayEmailDataFromLocal(){
   emailNotImportantArrayData = JSON.parse(localStorage.getItem('notImportantObjectStorage'));
 }
 
-//updates the local storage object data
-function SetObjectArrayDataToLocal(){
+function getCompletedObjects(){
+  reallyImportantCompletedObject = JSON.parse(localStorage.getItem('theReallyImportantCompletedObjectStorage'));
+  importantCompletedObject = JSON.parse(localStorage.getItem('theImportantCompletedObjectStorage'));
+  notImportantCompletedObject = JSON.parse(localStorage.getItem('theNotImportantCompletedObjectStorage'));
+}
+function makeSureTimesDontOverWrite(){
+  var setAtLoadReally = JSON.parse(localStorage.getItem('theReallImportantEmailsTime'));
+  var setAtLoadImportant = JSON.parse(localStorage.getItem('theImportantEmailsTime'));
+  var setAtLoadNot = JSON.parse(localStorage.getItem('theNotImportantEmailsTime'));
+  localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(setAtLoadReally));
+  localStorage.setItem('theImportantEmailsTime', JSON.stringify(setAtLoadImportant));
+  localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(setAtLoadNot));
+
 
 }
+
+function isThisObjectCompleted(anId){
+
+  getCompletedObjects();
+
+  var theReallyImportantObject = search(reallyImportantCompletedObject, anId, "id");
+  var theImportantObject = search(importantCompletedObject, anId, "id");
+  var theNotImportantObject = search(notImportantCompletedObject, anId, "id");
+
+  if(theReallyImportantObject != null){
+    return true;
+  }
+  else if(theImportantObject != null){
+    return true;
+  }
+  else if(theNotImportantObject != null){
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
 
 //notifies the user with the correct notification
 function notify(email)
@@ -138,11 +181,12 @@ function pushInCorrectArray(emailObject)
 function updateOpenTimeAndCalculate(theEmailId)
 {
   getArrayEmailDataFromLocal();
+  getCompletedObjects();
 
   //set them
   var theReallyImportantObject = search(emailReallyImportantArrayData, theEmailId, "id");
-  var theImportantObject = search(emailImportantArrayData, theEmailId, "id");//doesnt work because this is null an search doesnt allow it to be
-  var theNotImportantObject = search(emailNotImportantArrayData, theEmailId, "id");//doesnt work because this is null and search doesnt allow it to be
+  var theImportantObject = search(emailImportantArrayData, theEmailId, "id");
+  var theNotImportantObject = search(emailNotImportantArrayData, theEmailId, "id");
 
   //should update the object right now it just calculates total time and add it to new storage
   if(theReallyImportantObject != null){
@@ -150,41 +194,40 @@ function updateOpenTimeAndCalculate(theEmailId)
     theReallyImportantObject['openTime'] = getTime();
     theReallyImportantObject['totalTime'] = calculateTotalTime(theReallyImportantObject['receiveTime'],
     theReallyImportantObject['openTime']);
+    reallyImportantCompletedObject.push(theReallyImportantObject);
+    localStorage.setItem('theReallyImportantCompletedObjectStorage', JSON.stringify(reallyImportantCompletedObject));
     dontOverWriteReallyImportantTime.push(theReallyImportantObject['totalTime']);
     localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(dontOverWriteReallyImportantTime));
+    console.log(theReallyImportantObject);
   }
-  else{
-    return;
-  }
-    //console.log(theReallyImportantObject['totalTime'] + "this is a REALLY important object");
+
   }
   else if (theImportantObject != null){
     if(theImportantObject['openTime'] == 0 && theImportantObject['totalTime'] == 0 ){
     theImportantObject['openTime'] = getTime();
     theImportantObject['totalTime'] = calculateTotalTime(theImportantObject['receiveTime'],
     theImportantObject['openTime']);
-    dontOverWriteImportantTime.push(theReallyImportantObject['totalTime']);
-    localStorage.setItem('theImportantEmailsTime', JSON.stringify(dontOverWriteImportantTime['totalTime']));
+    importantCompletedObject.push(theImportantObject);
+    localStorage.setItem('theImportantCompletedObjectStorage', JSON.stringify(importantCompletedObject));
+    dontOverWriteImportantTime.push(theImportantObject['totalTime']);
+    localStorage.setItem('theImportantEmailsTime', JSON.stringify(dontOverWriteImportantTime));
   }
-  else{
-    return;
-  }
+
   }
   else if (theNotImportantObject != null){
     if(theNotImportantObject['openTime'] == 0 && theNotImportantObject['totalTime'] == 0 ){
     theNotImportantObject['openTime'] = getTime();
     theNotImportantObject['totalTime'] = calculateTotalTime(theNotImportantObject['receiveTime'],
     theNotImportantObject['openTime']);
+    notImportantCompletedObject.push(theNotImportantObject);
+    localStorage.setItem('theNotImportantCompletedObjectStorage', JSON.stringify(notImportantCompletedObject));
     dontOverWriteNotImportantTime.push(theNotImportantObject['totalTime']);
-    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(dontOverWriteNotImportantTime['totalTime']));
-  }
-  else {
-    return;
+    localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(dontOverWriteNotImportantTime));
   }
   //all of the objects are null
   }
   else{
-    return;
+    console.log("not an email");
   }
 }
 
@@ -212,6 +255,18 @@ function initGenericFill(){
       localStorage.setItem('reallyImportantObjectStorage', JSON.stringify(genericFillArray));
       localStorage.setItem('importantObjectStorage', JSON.stringify(genericFillArray));
       localStorage.setItem('notImportantObjectStorage', JSON.stringify(genericFillArray));
+      localStorage.setItem('theReallyImportantCompletedObjectStorage', JSON.stringify(genericFillArray));
+      localStorage.setItem('theImportantCompletedObjectStorage', JSON.stringify(genericFillArray));
+      localStorage.setItem('theNotImportantCompletedObjectStorage', JSON.stringify(genericFillArray));
+
+}
+
+function initGenericTimeFill(){
+  var genericTimeFillArray = new Array();
+  genericTimeFillArray.push(1)
+  localStorage.setItem('theReallyImportantEmailsTime', JSON.stringify(genericTimeFillArray));
+  localStorage.setItem('theImportantEmailsTime', JSON.stringify(genericTimeFillArray));
+  localStorage.setItem('theNotImportantEmailsTime', JSON.stringify(genericTimeFillArray));
 }
 
 //a really important email notification

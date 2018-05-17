@@ -13,7 +13,7 @@ window.addEventListener("getEmail", function(e)
   console.log(e.detail);
   chrome.runtime.sendMessage({email: e.detail}, function(response)
   {
-    console.log(response.farewell);
+    //console.log(response.farewell);
   })
 }, false);
 
@@ -23,6 +23,6 @@ window.addEventListener("getId", function(e)
   console.log(e.detail);
   chrome.runtime.sendMessage({theId: e.detail}, function(response)
   {
-    console.log(response.bye);
+    //console.log(response.bye);
   })
 }, false);
